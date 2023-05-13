@@ -9,16 +9,24 @@ from typing import List
 class Solution:
     def mostPoints(self, questions: List[List[int]]) -> int:
         n = len(questions)
-        points = [0] * n
+        dp = [0] * n
 
         for i in range(n):
-            current_pos = i
-            total_points = 0
-            for j in range(i, n):
-                if current_pos == j:
-                    total_points += questions[j][0]
-                    brainpower = questions[j][1]
-                    current_pos += brainpower + 1
-            points[i] = total_points
+            points, brainpower = questions[i]
 
-        return max(points)
+            # Calculate the maximum points that can be earned by skipping the current question
+            skip_points = dp[i - 1] if i > 0 else 0
+
+            # Calculate the maximum points that can be earned by solving the current question
+            solve_points = 0
+            if i >= brainpower:
+                solve_points = dp[i - brainpower] + points
+
+            # Choose the maximum of skip_points and solve_points
+            dp[i] = max(skip_points, solve_points)
+
+        return dp[n - 1]
+
+
+cls = Solution()
+print(cls.mostPoints([[21,5],[92,3],[74,2],[39,4],[58,2],[5,5],[49,4],[65,3]]))

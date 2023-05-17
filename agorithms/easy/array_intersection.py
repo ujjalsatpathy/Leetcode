@@ -12,6 +12,3 @@ class Solution:
                 arr.append(i)
         return arr
 
-
-cls = Solution()
-print(cls.intersect([4,9,5], [9,4,9,8,4]))
